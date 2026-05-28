@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca - Relatório</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="container mt-5">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Quantidade de Livros por Categoria</h2>
+    <a th:href="@{/livros}" class="btn btn-primary">Voltar para Livros</a>
+</div>
+
+<div class="card p-4 shadow-sm d-flex justify-content-center align-items-center" style="max-width: 600px; margin: 0 auto;">
+    <canvas id="graficoCategorias"></canvas>
+</div>
+
+<script th:inline="javascript">
+    // O Thymeleaf injeta as listas do Java direto aqui nas variáveis do JavaScript
+    const labelsCategorias = [[${nomesCategorias}]];
+    const dadosLivros = [[${quantidadeLivros}]];
+
+    // Configuração do Chart.js para criar um gráfico de barras ('bar')
+    const ctx = document.getElementById('graficoCategorias').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labelsCategorias, // Nomes das categorias no eixo X
+            datasets: [{
+                label: 'Quantidade de Livros',
+                data: dadosLivros, // Quantidade de livros no eixo Y
+                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+</script>
+</body>
+</html>
